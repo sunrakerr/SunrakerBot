@@ -1,18 +1,17 @@
 #id 655453559034347540
-#token NjU1NDUzNTU5MDM0MzQ3NTQw.XfUVFQ.SMK5gDrEYLrBZcTyb_GFU65UQJ8
+#token NjU1NDUzNTU5MDM0MzQ3NTQw.XgID5Q.1EqabfMRoUdj1aUJczMoed9bkVo
 # perm 67648
 # auth https://discordapp.com/oauth2/authorize?client_id=655453559034347540&scope=bot&permissions=67648
 import discord
 from firebase import firebase
-TOKEN = "NjU1NDUzNTU5MDM0MzQ3NTQw.XfUVFQ.SMK5gDrEYLrBZcTyb_GFU65UQJ8"
+
 firebase = firebase.FirebaseApplication("https://sunraker-bot.firebaseio.com/",None)
 
 client = discord.Client()
 @client.event
 async def on_ready():
     print(f"Logged in as {client.user}")
-    
-
+    await client.change_presence(status=discord.Status.online, activity=discord.Game(name='*sun help for help'))
 
 @client.event
 async def on_message(message):
@@ -163,4 +162,5 @@ def bnotes(inpstr,guild_name):
             return final_note
     
 
-client.run(TOKEN)
+ 
+client.run("NjU1NDUzNTU5MDM0MzQ3NTQw.XgID5Q.1EqabfMRoUdj1aUJczMoed9bkVo")
