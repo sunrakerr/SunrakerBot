@@ -1,9 +1,10 @@
-#id 655453559034347540
-#token NjU1NDUzNTU5MDM0MzQ3NTQw.XgID5Q.1EqabfMRoUdj1aUJczMoed9bkVo
+#token-id-encr
 # perm 67648
 # auth https://discordapp.com/oauth2/authorize?client_id=655453559034347540&scope=bot&permissions=67648
 import discord
 from firebase import firebase
+from bs4 import BeautifulSoup as bs
+import requests
 
 firebase = firebase.FirebaseApplication("https://sunraker-bot.firebaseio.com/",None)
 
@@ -18,18 +19,18 @@ async def on_message(message):
     try:
         inpString = message.content
         inpString  = inpString.split(' ')
-        
+
         if '*sun' in inpString[0]:
             inpString.remove('*sun')
-            
+
             if 'hey' in inpString[0]:
-                msg = "Hey! " + message.author.name +"...sup?" 
+                msg = "Hey! " + message.author.name +"...sup?"
                 await message.channel.send(msg)
 
             elif 'math' in inpString[0]:
                 inpString.remove('math')
                 ans = mather(inpString)
-                mms = "`` "+str(ans)+" ``"   
+                mms = "`` "+str(ans)+" ``"
                 await message.channel.send(mms)
             elif 'ping' in inpString[0]:
                 ping = '`` '+' Current ping: '+ str(round(client.latency*100,1)) +' ``'
@@ -38,7 +39,12 @@ async def on_message(message):
             elif 'bnotes' in inpString[0]:
                 inpString.remove('bnotes')
                 test = bnotes(inpString,message.guild)
-                await message.channel.send(test)                
+                await message.channel.send(test)
+
+            elif 'lexis' in inpString[0]:
+                inpString.remove('lexis')
+                test = lexis(inpString)
+                await message.channel.send(test)
 
             elif 'help' in inpString[0]:
                 inpString.remove('help')
@@ -49,9 +55,9 @@ async def on_message(message):
                                 "``ping`` to get bot ping"
                                 ]
                     ms = helplister(helpcomms)
-                    
+
                     await message.channel.send(ms)
-                
+
                 elif 'math' in inpString[0]:
                     mathhelp = ["``add [int-set]`` to add",
                                 "``sub [int-set]`` to subtract",
@@ -63,16 +69,16 @@ async def on_message(message):
                     await message.channel.send(ms)
                 elif 'bnotes' in inpString[0]:
                     mathhelp = ["'add [string]' to add new note",
-                                "'show' to show guild notes" 
+                                "'show' to show guild notes"
                                 ]
                     ms = helplister(mathhelp)
                     await message.channel.send(ms)
-                             
+
     except:
          await message.channel.send("What?? Try `` *sun help `` for help.")
 
 
-#help           
+#help
 def helplister(inp):
     test = inp
     fin = ""
@@ -80,7 +86,7 @@ def helplister(inp):
         fin +='+ '+ i +'\n\n'
 
     ind = ">>> **>Help:**\n"+fin+"```* You can also ask something like *sun help math or *sun help bnotes```"
-    
+
     return ind
 
 
@@ -90,7 +96,7 @@ def mather(inp):
     if 'add' in merg[0]:
         merg.remove('add')
         for i,j in enumerate(merg):
-            merg[i] = int(j)           
+            merg[i] = int(j)
         return sum(merg)
     if 'multiply' in merg[0]:
         merg.remove('multiply')
@@ -98,19 +104,19 @@ def mather(inp):
             merg[i] = int(j)
         res = 1
         for i in merg:
-            res = res*i           
+            res = res*i
         return res
     if 'mod' in merg[0]:
         merg.remove('mod')
         for i,j in enumerate(merg):
             merg[i] = int(j)
-        res = merg[0] % merg[1]           
+        res = merg[0] % merg[1]
         return res
     if 'divide' in merg[0]:
         merg.remove('divide')
         for i,j in enumerate(merg):
             merg[i] = int(j)
-        res = merg[0] / merg[1]           
+        res = merg[0] / merg[1]
         return res
     if 'sub' in merg[0]:
         merg.remove('sub')
@@ -119,11 +125,11 @@ def mather(inp):
         res = merg[0]
         merg.remove(res)
         for i in merg:
-            res = res - i           
+            res = res - i
         return res
     else:
         return "Math function error"
-    
+
 #bnotes
 def bnotes(inpstr,guild_name):
     guild_path = 'b-notes/'+str(guild_name)
@@ -134,7 +140,7 @@ def bnotes(inpstr,guild_name):
         note_string = ""
         for i in inpstr:
             note_string += i +" "
-  
+
         if (note_string == ""):
             return "`` No notes? ``"
         else:
@@ -147,7 +153,7 @@ def bnotes(inpstr,guild_name):
                 guild_notes_copy = getter
                 guild_notes_copy.append(note_string)
                 firebase.put('/',guild_path,guild_notes_copy)
-                return "`` Notes appended! ``"  
+                return "`` Notes appended! ``"
 
     if 'show' in inpstr[0]:
         if(getter == None):
@@ -160,7 +166,27 @@ def bnotes(inpstr,guild_name):
 
             final_note = "``"+get_note_str+"``"
             return final_note
-    
 
- 
-client.run("NjU1NDUzNTU5MDM0MzQ3NTQw.XgID5Q.1EqabfMRoUdj1aUJczMoed9bkVo")
+
+#lexis-vocabulary-function
+def lexis(inp):
+    try:
+
+        inp_word = inp[0]
+
+        url = "https://www.vocabulary.com/dictionary/"
+        url += inp_word.lower().strip()
+        req = requests.get(url)
+        soup_var = bs(req.content,'lxml')
+        vocab = soup_var.findAll('p',{'class' : 'short'})
+
+        str_slice = str(vocab).replace('<p class="short">','').replace('</p>','').replace('<i>','``').replace('</i>','``').replace('[','').replace(']','')
+
+        return str_slice
+    except:
+        return "`` no word like that in lexis! ``"
+
+
+
+
+client.run(TOKEN) #get-token-from-dev
