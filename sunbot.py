@@ -1,4 +1,6 @@
-#token-id-encr
+#id 655453559034347540
+#token NjU1NDUzNTU5MDM0MzQ3NTQw.XgOuGQ.J7Yl25PfE9xuWItRuZNnZzvwqbU
+TOKEN = "NjU1NDUzNTU5MDM0MzQ3NTQw.XgOuGQ.J7Yl25PfE9xuWItRuZNnZzvwqbU"
 # perm 67648
 # auth https://discordapp.com/oauth2/authorize?client_id=655453559034347540&scope=bot&permissions=67648
 import discord
@@ -52,6 +54,7 @@ async def on_message(message):
                     helpcomms = ["``hey`` to say hey to sunrakerbot",
                                 "``math [math-func] [int-set]`` to perform math stuff",
                                 "``bnotes [bnotes-func] [string]`` to make guild notes",
+                                "``lexis [word]`` to do a dictionary search",
                                 "``ping`` to get bot ping"
                                 ]
                     ms = helplister(helpcomms)
@@ -189,4 +192,4 @@ def lexis(inp):
 
 
 
-client.run(TOKEN) #get-token-from-dev
+client.run(TOKEN)
