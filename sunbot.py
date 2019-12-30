@@ -148,7 +148,7 @@ def bnotes(inpstr,guild_name):
             return "`` No notes? ``"
         else:
             if (getter == None):
-                notes = ['Notes:-']
+                notes = ['Notes:- <-']
                 notes.append(note_string)
                 firebase.put('/',guild_path,notes)
                 return "`` Notes added! ``"
@@ -167,8 +167,15 @@ def bnotes(inpstr,guild_name):
             for i in get_note:
                 get_note_str += '-> '+i+'\n'
 
-            final_note = "``"+get_note_str+"``"
+            final_note = ">>> "+get_note_str
             return final_note
+
+    if 'drop' in inpstr[0]:
+        if(getter == None):
+            return "`` No notes to drop dumbo! ``"
+        else:
+            firebase.delete('/b-notes',str(guild_name))
+            return "`` Notes dropped ``"
 
 
 #lexis-vocabulary-function
