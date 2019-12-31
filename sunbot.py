@@ -135,10 +135,14 @@ def mather(inp):
 
 #bnotes
 def bnotes(inpstr,guild_name):
-    guild_path = 'b-notes/'+str(guild_name)
+    nguild = str(guild_name).replace(".","")
+    guild_path = 'b-notes/'+str(nguild)
+    
     getter = firebase.get("/",guild_path)
+    
 
     if 'add' in inpstr[0]:
+        
         inpstr.remove('add')
         note_string = ""
         for i in inpstr:
