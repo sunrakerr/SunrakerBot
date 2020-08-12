@@ -1,6 +1,4 @@
-#id 655453559034347540
-#token NjU1NDUzNTU5MDM0MzQ3NTQw.XgOuGQ.J7Yl25PfE9xuWItRuZNnZzvwqbU
-TOKEN = "NjU1NDUzNTU5MDM0MzQ3NTQw.XgOuGQ.J7Yl25PfE9xuWItRuZNnZzvwqbU"
+TOKEN = " "
 # perm 67648
 # auth https://discordapp.com/oauth2/authorize?client_id=655453559034347540&scope=bot&permissions=67648
 import discord
@@ -8,7 +6,7 @@ from firebase import firebase
 from bs4 import BeautifulSoup as bs
 import requests
 
-firebase = firebase.FirebaseApplication("https://sunraker-bot.firebaseio.com/",None)
+firebase = firebase.FirebaseApplication(" ",None)
 
 client = discord.Client()
 @client.event
